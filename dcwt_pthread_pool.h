@@ -14,21 +14,27 @@ typedef struct _DCWTPthreadTask
 	void * data
 }DCWTPthreadTask;
 
+typedef struct _DCWTPthreadQueue
+{
+	TAILQ_HEAD(,_DCWTPthreadTask) taskEntry;
+	uint32_t  taskNum;
+	
+	dcwt_pthread_mutex_t taskMutex;
+	dcwt_pthread_cond_t taskCond;
+}DCWTPthreadQueue;
+
 typedef struct _DCWTPthreadPool
 {
-	TAILQ_HEAD(,_DCWTPthreadTask) taskUsedEntry;
-	TAILQ_HEAD(,_DCWTPthreadTask) taskFreeEntry;
 	
+	DCWTPthreadQueue freeQueue;
+	DCWTPhtreadQueue usedQueue;
 	DCWTHost * host;
 	//DCWTPthreadTask tasks[DCWT_PTHREAD_POOL_QUEUE_SIZE];
 	uint16_t threadsNum;
 	volatile uint16_t stopFlag;
 	
 	pthread_t * threadsPID;
-	dcwt_pthread_mutex_t taskFreeMutex;
-	dcwt_pthread_mutex_t taskUsedMutex;
-	dcwt_pthread_cond_t taskFreeCond;
-	dcwt_pthread_cond_t taskUsedMutex;
+	
 }DCWTPhtreadPool;
 
 #endif
