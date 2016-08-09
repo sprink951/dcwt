@@ -7,7 +7,14 @@
 
 typedef int (* peerCallBack)(void *);
 
-threadpool_queue_init
+typedef struct _DCWTPacket
+{
+	TAILQ_ENTRY(_DCWTPacket) packetList;
+	
+	struct _DCWTPeer * peer;
+	uint32_t packetLength;
+	char * packet;
+}DCWT_PACKED DCWTPacket;
 
 typedef struct _DCWTHost
 {
